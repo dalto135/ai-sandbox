@@ -4,6 +4,8 @@ import styles from "./index.module.css";
 
 export default function Home() {
   const [animalInput, setAnimalInput] = useState("");
+  const [imageInput, setImageInput] = useState("");
+  const [whisperInput, setwhisperInput] = useState("");
   const [result, setResult] = useState();
 
   async function onSubmit(event) {
@@ -24,6 +26,8 @@ export default function Home() {
 
       setResult(data.result);
       setAnimalInput("");
+      setImageInput("");
+      setwhisperInput("");
     } catch(error) {
       // Consider implementing your own error handling logic here
       console.error(error);
@@ -40,7 +44,9 @@ export default function Home() {
 
       <main className={styles.main}>
         <img src="/dog.png" className={styles.icon} />
+
         <h3>Name my pet</h3>
+
         <form onSubmit={onSubmit}>
           <input
             type="text"
@@ -52,6 +58,38 @@ export default function Home() {
           <input type="submit" value="Generate names" />
         </form>
         <div className={styles.result}>{result}</div>
+
+        <div className={styles.main}>
+          <h3>DALL•E</h3>
+
+          <form onSubmit={onSubmit}>
+            <input
+              type="text"
+              name="image"
+              placeholder="Enter a prompt to generate an image"
+              value={imageInput}
+              onChange={(e) => setAnimalInput(e.target.value)}
+            />
+            <input type="submit" value="Generate image" />
+          </form>
+          <div className={styles.result}>{result}</div>
+        </div>
+
+        <div className={styles.main}>
+          <h3>Whisper</h3>
+
+          <form onSubmit={onSubmit}>
+            <input
+              type="text"
+              name="image"
+              placeholder="Submit an audio clip for transcription"
+              value={whisperInput}
+              onChange={(e) => setWhisperInput(e.target.value)}
+            />
+            <input type="submit" value="Transcribe" />
+            <div className={styles.result}>{result}</div>
+          </form>
+        </div>
       </main>
     </div>
   );
