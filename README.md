@@ -17,7 +17,7 @@ https://dalto135.github.io/ai-sandbox/
 HTML and CSS, Javascript, React
 
 ## Description
-This is an example pet name generator app used in the OpenAI API quickstart tutorial. It uses the Next.js framework with React. Check out the [tutorial](https://platform.openai.com/docs/quickstart) to get set up.
+This is an example pet name generator app used in the OpenAI API quickstart tutorial. It uses the Next.js framework with React. Check out the [tutorial](https://platform.openai.com/docs/quickstart) to get set up. Enter `npm run dev` to start up the app.
 
 ## Screenshots
 
