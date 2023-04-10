@@ -178,7 +178,7 @@ export default function Home() {
             />
             <input type="submit" value="Generate image" />
           </form>
-          <div className={styles.result}>{dalleResult}</div>
+          <img className={styles.result} src={dalleResult}/>
         </div>
 
         <div className={styles.main}>
@@ -188,13 +188,13 @@ export default function Home() {
             <input
               type="text"
               name="image"
-              placeholder="Enter a prompt to generate an image"
+              placeholder="Edit an image"
               value={dalleEditInput}
               onChange={(e) => setDalleEditInput(e.target.value)}
             />
             <input type="submit" value="Edit image" />
           </form>
-          <div className={styles.result}>{dalleEditResult}</div>
+          <img className={styles.result} src={dalleEditResult}/>
         </div>
 
         <div className={styles.main}>
@@ -204,13 +204,13 @@ export default function Home() {
             <input
               type="text"
               name="image"
-              placeholder="Enter a prompt to generate an image"
+              placeholder="Alter an image"
               value={dalleVariationInput}
               onChange={(e) => setDalleVariationInput(e.target.value)}
             />
             <input type="submit" value="Alter image" />
           </form>
-          <div className={styles.result}>{dalleVariationResult}</div>
+          <img className={styles.result} src={dalleVariationResult}/>
         </div>
 
         <div className={styles.main}>
@@ -220,7 +220,7 @@ export default function Home() {
             <input
               type="text"
               name="image"
-              placeholder="Submit an audio clip for transcription"
+              placeholder="Submit an audio clip for transcription/translation"
               value={whisperInput}
               onChange={(e) => setWhisperInput(e.target.value)}
             />
