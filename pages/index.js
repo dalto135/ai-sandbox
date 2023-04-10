@@ -151,83 +151,91 @@ export default function Home() {
       <main className={styles.main}>
         <img src="/dog.png" className={styles.icon} />
 
-        <h3>Name my pet</h3>
+        <section className="section">
+          <div className={styles.main}>
+            <h3>Name my pet</h3>
 
-        <form onSubmit={onSubmit}>
-          <input
-            type="text"
-            name="animal"
-            placeholder="Enter an animal"
-            value={animalInput}
-            onChange={(e) => setAnimalInput(e.target.value)}
-          />
-          <input type="submit" value="Generate names" />
-        </form>
-        <div className={styles.result}>{animalResult}</div>
+            <form onSubmit={onSubmit}>
+              <input
+                type="text"
+                name="animal"
+                placeholder="Enter an animal"
+                value={animalInput}
+                onChange={(e) => setAnimalInput(e.target.value)}
+              />
+              <input type="submit" value="Generate names" />
+            </form>
+            <div className={styles.result}>{animalResult}</div>
+          </div>
 
-        <div className={styles.main}>
-          <h3>DALL•E Generate</h3>
+          <div className={styles.main}>
+            <h3>DALL•E Generate</h3>
 
-          <form onSubmit={dalleOnSubmit}>
-            <input
-              type="text"
-              name="image"
-              placeholder="Enter a prompt to generate an image"
-              value={dalleInput}
-              onChange={(e) => setDalleInput(e.target.value)}
-            />
-            <input type="submit" value="Generate image" />
-          </form>
-          <img className={styles.result} src={dalleResult}/>
-        </div>
+            <form onSubmit={dalleOnSubmit}>
+              <input
+                type="text"
+                name="image"
+                placeholder="Enter a prompt to generate an image"
+                value={dalleInput}
+                onChange={(e) => setDalleInput(e.target.value)}
+              />
+              <input type="submit" value="Generate image" />
+            </form>
+            <img className={styles.result} src={dalleResult}/>
+          </div>
+        </section>
 
-        <div className={styles.main}>
-          <h3>DALL•E Edit</h3>
+        <section className="section">
+          <div className={styles.main}>
+            <h3>DALL•E Edit</h3>
 
-          <form onSubmit={dalleEditOnSubmit}>
-            <input
-              type="text"
-              name="image"
-              placeholder="Edit an image"
-              value={dalleEditInput}
-              onChange={(e) => setDalleEditInput(e.target.value)}
-            />
-            <input type="submit" value="Edit image" />
-          </form>
-          <img className={styles.result} src={dalleEditResult}/>
-        </div>
+            <form onSubmit={dalleEditOnSubmit}>
+              <input
+                type="text"
+                name="image"
+                placeholder="Edit an image"
+                value={dalleEditInput}
+                onChange={(e) => setDalleEditInput(e.target.value)}
+              />
+              <input type="submit" value="Edit image" />
+            </form>
+            <img className={styles.result} src={dalleEditResult}/>
+          </div>
 
-        <div className={styles.main}>
-          <h3>DALL•E Variation</h3>
+          <div className={styles.main}>
+            <h3>DALL•E Variation</h3>
 
-          <form onSubmit={dalleVariationOnSubmit}>
-            <input
-              type="text"
-              name="image"
-              placeholder="Alter an image"
-              value={dalleVariationInput}
-              onChange={(e) => setDalleVariationInput(e.target.value)}
-            />
-            <input type="submit" value="Alter image" />
-          </form>
-          <img className={styles.result} src={dalleVariationResult}/>
-        </div>
+            <form onSubmit={dalleVariationOnSubmit}>
+              <input
+                type="text"
+                name="image"
+                placeholder="Alter an image"
+                value={dalleVariationInput}
+                onChange={(e) => setDalleVariationInput(e.target.value)}
+              />
+              <input type="submit" value="Alter image" />
+            </form>
+            <img className={styles.result} src={dalleVariationResult}/>
+          </div>
+        </section>
 
-        <div className={styles.main}>
-          <h3>Whisper</h3>
+        <section className="section">
+          <div className={styles.main}>
+            <h3>Whisper</h3>
 
-          <form onSubmit={whisperOnSubmit}>
-            <input
-              type="text"
-              name="image"
-              placeholder="Submit an audio clip for transcription/translation"
-              value={whisperInput}
-              onChange={(e) => setWhisperInput(e.target.value)}
-            />
-            <input type="submit" value="Transcribe" />
-          </form>
-          <div className={styles.result}>{whisperResult}</div>
-        </div>
+            <form onSubmit={whisperOnSubmit}>
+              <input
+                type="text"
+                name="image"
+                placeholder="Submit an audio clip for transcription/translation"
+                value={whisperInput}
+                onChange={(e) => setWhisperInput(e.target.value)}
+              />
+              <input type="submit" value="Transcribe" />
+            </form>
+            <div className={styles.result}>{whisperResult}</div>
+          </div>
+        </section>
       </main>
     </div>
   );

@@ -39,7 +39,6 @@ export default async function (req, res) {
             size: "1024x1024",
         });
         res.status(200).json({ result: response.data.data[0].url });
-        // image_url = response.data.data[0].url;
     } catch(error) {
         // Consider adjusting the error handling logic for your use case
         if (error.response) {
