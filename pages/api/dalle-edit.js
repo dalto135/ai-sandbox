@@ -30,7 +30,7 @@ export default async function (req, res) {
         //     // prompt: "a white siamese cat",
         //     prompt: generatePrompt(animal),
         //     n: 1,
-        //     size: "1024x1024",
+        //     size: "512x512",
         // });
         // res.status(200).json({ result: response.data.data[0].url });
         // image_url = response.data.data[0].url;
@@ -40,7 +40,7 @@ export default async function (req, res) {
             fs.createReadStream("mask.png"),
             generatePrompt(animal),
             1,
-            "1024x1024"
+            "512x512"
         );
         res.status(200).json({ result: response.data.data[0].url });
     } catch(error) {

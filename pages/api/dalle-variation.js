@@ -30,14 +30,14 @@ export default async function (req, res) {
         //     // prompt: "a white siamese cat",
         //     prompt: generatePrompt(animal),
         //     n: 1,
-        //     size: "1024x1024",
+        //     size: "512x512",
         // });
         // res.status(200).json({ result: response.data.data[0].url });
 
         const response = await openai.createImageVariation(
             fs.createReadStream("corgi_and_cat_paw.png"),
             1,
-            "1024x1024"
+            "512x512"
         );
         res.status(200).json({ result: response.data.data[0].url });
     } catch(error) {
