@@ -5,7 +5,9 @@ import styles from "./index.module.css";
 export default function Home() {
   const [animalInput, setAnimalInput] = useState("");
   const [dalleInput, setDalleInput] = useState("");
-  const [dalleEditInput, setDalleEditInput] = useState("");
+  const [dalleEditImage1, setDalleEditImage1] = useState("");
+  const [dalleEditImage2, setDalleEditImage2] = useState("");
+  const [dalleEditPrompt, setDalleEditPrompt] = useState("");
   const [dalleVariationInput, setDalleVariationInput] = useState("");
   const [whisperInput, setWhisperInput] = useState("");
 
@@ -23,7 +25,7 @@ export default function Home() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ animal: animalInput }),
+        body: JSON.stringify({ prompt: animalInput }),
       });
 
       const data = await response.json();
@@ -49,7 +51,7 @@ export default function Home() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ animal: dalleInput }),
+        body: JSON.stringify({ prompt: dalleInput }),
       });
 
       const data = await response.json();
@@ -74,7 +76,11 @@ export default function Home() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ animal: dalleEditInput }),
+        body: JSON.stringify({
+          image1: dalleEditImage1,
+          image2: dalleEditImage2,
+          prompt: dalleEditPrompt
+        }),
       });
 
       const data = await response.json();
@@ -83,7 +89,9 @@ export default function Home() {
       }
 
       setDalleEditResult(data.result);
-      setDalleEditInput("");
+      setDalleEditImage1("");
+      setDalleEditImage2("");
+      setDalleEditPrompt("");
     } catch(error) {
       // Consider implementing your own error handling logic here
       console.error(error);
@@ -99,7 +107,7 @@ export default function Home() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ animal: dalleVariationInput }),
+        body: JSON.stringify({ image: dalleVariationInput }),
       });
 
       const data = await response.json();
@@ -116,30 +124,30 @@ export default function Home() {
     }
   }
 
-  async function whisperOnSubmit(event) {
-    event.preventDefault();
-    try {
-      const response = await fetch("/api/whisper-generate", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ animal: whisperInput }),
-      });
+  // async function whisperOnSubmit(event) {
+  //   event.preventDefault();
+  //   try {
+  //     const response = await fetch("/api/whisper-generate", {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify({ animal: whisperInput }),
+  //     });
 
-      const data = await response.json();
-      if (response.status !== 200) {
-        throw data.error || new Error(`Request failed with status ${response.status}`);
-      }
+  //     const data = await response.json();
+  //     if (response.status !== 200) {
+  //       throw data.error || new Error(`Request failed with status ${response.status}`);
+  //     }
 
-      setWhisperResult(data.result);
-      setWhisperInput("");
-    } catch(error) {
-      // Consider implementing your own error handling logic here
-      console.error(error);
-      alert(error.message);
-    }
-  }
+  //     setWhisperResult(data.result);
+  //     setWhisperInput("");
+  //   } catch(error) {
+  //     // Consider implementing your own error handling logic here
+  //     console.error(error);
+  //     alert(error.message);
+  //   }
+  // }
 
   return (
     <div>
@@ -192,10 +200,24 @@ export default function Home() {
             <form onSubmit={dalleEditOnSubmit}>
               <input
                 type="text"
-                name="image"
-                placeholder="Edit an image"
-                value={dalleEditInput}
-                onChange={(e) => setDalleEditInput(e.target.value)}
+                name="image1"
+                placeholder="Enter image 1 location or leave blank"
+                value={dalleEditImage1}
+                onChange={(e) => setDalleEditImage1(e.target.value)}
+              />
+              <input
+                type="text"
+                name="image2"
+                placeholder="Enter image 2 location or leave blank"
+                value={dalleEditImage2}
+                onChange={(e) => setDalleEditImage2(e.target.value)}
+              />
+              <input
+                type="text"
+                name="prompt"
+                placeholder="Enter prompt or leave blank"
+                value={dalleEditPrompt}
+                onChange={(e) => setDalleEditPrompt(e.target.value)}
               />
               <input type="submit" value="Edit image" />
             </form>
@@ -209,7 +231,7 @@ export default function Home() {
               <input
                 type="text"
                 name="image"
-                placeholder="Alter an image"
+                placeholder="Enter image location or leave blank"
                 value={dalleVariationInput}
                 onChange={(e) => setDalleVariationInput(e.target.value)}
               />
@@ -219,7 +241,7 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="section">
+        {/* <section className="section">
           <div className={styles.main}>
             <h3>Whisper</h3>
 
@@ -235,7 +257,7 @@ export default function Home() {
             </form>
             <div className={styles.result}>{whisperResult}</div>
           </div>
-        </section>
+        </section> */}
       </main>
     </div>
   );

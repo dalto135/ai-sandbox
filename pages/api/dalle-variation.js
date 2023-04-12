@@ -15,27 +15,12 @@ export default async function (req, res) {
         return;
     }
 
-    const animal = req.body.animal || '';
-    if (animal.trim().length === 0) {
-        res.status(400).json({
-        error: {
-            message: "Please enter a valid animal",
-        }
-        });
-        return;
-    }
+    const fs = require('fs');
+    const image = req.body.image || "public/solarpunk.png";
 
     try {
-        // const response = await openai.createImage({
-        //     // prompt: "a white siamese cat",
-        //     prompt: generatePrompt(animal),
-        //     n: 1,
-        //     size: "512x512",
-        // });
-        // res.status(200).json({ result: response.data.data[0].url });
-
         const response = await openai.createImageVariation(
-            fs.createReadStream("corgi_and_cat_paw.png"),
+            fs.createReadStream(image),
             1,
             "512x512"
         );
@@ -43,30 +28,15 @@ export default async function (req, res) {
     } catch(error) {
         // Consider adjusting the error handling logic for your use case
         if (error.response) {
-        console.error(error.response.status, error.response.data);
-        res.status(error.response.status).json(error.response.data);
+            console.error(error.response.status, error.response.data);
+            res.status(error.response.status).json(error.response.data);
         } else {
-        console.error(`Error with OpenAI API request: ${error.message}`);
-        res.status(500).json({
-            error: {
-            message: 'An error occurred during your request.',
-            }
-        });
+            console.error(`Error with OpenAI API request: ${error.message}`);
+            res.status(500).json({
+                error: {
+                message: 'An error occurred during your request.',
+                }
+            });
         }
     }
 }
-
-// function generatePrompt(animal) {
-//     const capitalizedAnimal = animal[0].toUpperCase() + animal.slice(1).toLowerCase();
-
-//     // return `
-//     //     Suggest three names for an animal that is a superhero.
-//     //     Animal: Cat
-//     //     Names: Captain Sharpclaw, Agent Fluffball, The Incredible Feline
-//     //     Animal: Dog
-//     //     Names: Ruff the Protector, Wonder Canine, Sir Barks-a-Lot
-//     //     Animal: ${capitalizedAnimal}
-//     //     Names:
-//     // `;
-//     return capitalizedAnimal;
-// }

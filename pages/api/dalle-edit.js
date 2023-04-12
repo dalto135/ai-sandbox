@@ -15,30 +15,17 @@ export default async function (req, res) {
         return;
     }
 
-    const animal = req.body.animal || '';
-    if (animal.trim().length === 0) {
-        res.status(400).json({
-        error: {
-            message: "Please enter a valid animal",
-        }
-        });
-        return;
-    }
+    const image1 = req.body.image1 || "public/dog.png";
+    const image2 = req.body.image2 || "public/dog.png";
+    const prompt = req.body.prompt || "cat";
+
+    const fs = require('fs');
 
     try {
-        // const response = await openai.createImage({
-        //     // prompt: "a white siamese cat",
-        //     prompt: generatePrompt(animal),
-        //     n: 1,
-        //     size: "512x512",
-        // });
-        // res.status(200).json({ result: response.data.data[0].url });
-        // image_url = response.data.data[0].url;
-
         const response = await openai.createImageEdit(
-            fs.createReadStream("sunlit_lounge.png"),
-            fs.createReadStream("mask.png"),
-            generatePrompt(animal),
+            fs.createReadStream(image1),
+            fs.createReadStream(image2),
+            generatePrompt(prompt),
             1,
             "512x512"
         );
@@ -59,8 +46,8 @@ export default async function (req, res) {
     }
 }
 
-function generatePrompt(animal) {
-    const capitalizedAnimal = animal[0].toUpperCase() + animal.slice(1).toLowerCase();
+function generatePrompt(prompt) {
+    const capitalizedPrompt = prompt[0].toUpperCase() + prompt.slice(1).toLowerCase();
 
     // return `
     //     Suggest three names for an animal that is a superhero.
@@ -68,8 +55,8 @@ function generatePrompt(animal) {
     //     Names: Captain Sharpclaw, Agent Fluffball, The Incredible Feline
     //     Animal: Dog
     //     Names: Ruff the Protector, Wonder Canine, Sir Barks-a-Lot
-    //     Animal: ${capitalizedAnimal}
+    //     Animal: ${capitalizedPrompt}
     //     Names:
     // `;
-    return capitalizedAnimal;
+    return capitalizedPrompt;
 }
