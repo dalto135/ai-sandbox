@@ -3,19 +3,19 @@ import { useState } from "react";
 import styles from "./index.module.css";
 
 export default function Home() {
-  const [animalInput, setAnimalInput] = useState("");
+  const [promptInput, setPromptInput] = useState("");
   const [dalleInput, setDalleInput] = useState("");
   const [dalleEditImage1, setDalleEditImage1] = useState("");
   const [dalleEditImage2, setDalleEditImage2] = useState("");
   const [dalleEditPrompt, setDalleEditPrompt] = useState("");
   const [dalleVariationInput, setDalleVariationInput] = useState("");
-  const [whisperInput, setWhisperInput] = useState("");
+  // const [whisperInput, setWhisperInput] = useState("");
 
-  const [animalResult, setAnimalResult] = useState();
+  const [promptResult, setPromptResult] = useState();
   const [dalleResult, setDalleResult] = useState();
   const [dalleEditResult, setDalleEditResult] = useState();
   const [dalleVariationResult, setDalleVariationResult] = useState();
-  const [whisperResult, setWhisperResult] = useState();
+  // const [whisperResult, setWhisperResult] = useState();
 
   async function onSubmit(event) {
     event.preventDefault();
@@ -25,7 +25,7 @@ export default function Home() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ prompt: animalInput }),
+        body: JSON.stringify({ prompt: promptInput }),
       });
 
       const data = await response.json();
@@ -33,8 +33,8 @@ export default function Home() {
         throw data.error || new Error(`Request failed with status ${response.status}`);
       }
 
-      setAnimalResult(data.result);
-      setAnimalInput("");
+      setPromptResult(data.result);
+      setPromptInput("");
 
     } catch(error) {
       // Consider implementing your own error handling logic here
@@ -168,12 +168,12 @@ export default function Home() {
                 type="text"
                 name="animal"
                 placeholder="Enter an animal"
-                value={animalInput}
-                onChange={(e) => setAnimalInput(e.target.value)}
+                value={promptInput}
+                onChange={(e) => setPromptInput(e.target.value)}
               />
               <input type="submit" value="Generate names" />
             </form>
-            <div className={styles.result}>{animalResult}</div>
+            <div className={styles.result}>{promptResult}</div>
           </div>
 
           <div className={styles.main}>
