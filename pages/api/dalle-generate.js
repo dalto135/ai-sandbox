@@ -31,7 +31,12 @@ export default async function (req, res) {
             n: 1,
             size: "512x512",
         });
-        res.status(200).json({ result: response.data.data[0].url });
+
+        function getUrl(image) {
+            return image.url
+        }
+
+        res.status(200).json({ result: response.data.data.map(getUrl) });
     } catch(error) {
         // Consider adjusting the error handling logic for your use case
         if (error.response) {

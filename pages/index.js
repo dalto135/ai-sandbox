@@ -189,7 +189,9 @@ export default function Home() {
               />
               <input type="submit" value="Generate image" />
             </form>
-            <img className={styles.result} src={dalleResult}/>
+            {dalleResult?.map((image) => 
+              <img className={styles.result} src={image}/>
+            )}
           </div>
         </section>
 
@@ -221,7 +223,9 @@ export default function Home() {
               />
               <input type="submit" value="Edit image" />
             </form>
-            <img className={styles.result} src={dalleEditResult}/>
+            {dalleEditResult?.map((image) => 
+              <img className={styles.result} src={image}/>
+            )}
           </div>
 
           <div className={styles.main}>
@@ -237,7 +241,9 @@ export default function Home() {
               />
               <input type="submit" value="Alter image" />
             </form>
-            <img className={styles.result} src={dalleVariationResult}/>
+            {dalleVariationResult?.map((image) => 
+              <img className={styles.result} src={image}/>
+            )}
           </div>
         </section>
 

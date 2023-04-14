@@ -15,7 +15,8 @@ export default async function (req, res) {
         return;
     }
 
-    const image1 = req.body.image1 || "public/dog.png";
+    // Relative paths of images, from root directory
+    const image1 = req.body.image1 || "public/littlepunk.png";
     const image2 = req.body.image2 || "public/dog.png";
     const prompt = req.body.prompt || "cat";
 
@@ -29,7 +30,12 @@ export default async function (req, res) {
             1,
             "512x512"
         );
-        res.status(200).json({ result: response.data.data[0].url });
+
+        function getUrl(image) {
+            return image.url
+        }
+
+        res.status(200).json({ result: response.data.data.map(getUrl) });
     } catch(error) {
         // Consider adjusting the error handling logic for your use case
         if (error.response) {
