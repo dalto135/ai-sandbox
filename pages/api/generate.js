@@ -15,7 +15,7 @@ export default async function (req, res) {
     return;
   }
 
-  const prompt = req.body.prompt || '';
+  const prompt = req.body.prompt || "unicorn";
   if (prompt.trim().length === 0) {
     res.status(400).json({
       error: {
@@ -25,11 +25,31 @@ export default async function (req, res) {
     return;
   }
 
+  const temperature = req.body.temperature || 0.6;
+  if (!Number(temperature) && Number(temperature) != 0) {
+    res.status(400).json({
+      error: {
+        message: "Please enter a valid temperature.",
+      }
+    });
+  
+    return;
+  }
+  if (temperature < 0 || temperature > 1) {
+    res.status(400).json({
+      error: {
+        message: "Temperature must be between 0 and 1.",
+      }
+    });
+  
+    return;
+  }
+
   try {
     const completion = await openai.createCompletion({
       model: "text-davinci-003",
       prompt: generatePrompt(prompt),
-      temperature: 0.6,
+      temperature: Number(temperature)
     });
     res.status(200).json({ result: completion.data.choices[0].text });
   } catch(error) {

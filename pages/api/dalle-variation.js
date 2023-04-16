@@ -4,6 +4,7 @@ const configuration = new Configuration({
     apiKey: process.env.OPENAI_API_KEY,
 });
 const openai = new OpenAIApi(configuration);
+const fs = require('fs');
 
 export default async function (req, res) {
     if (!configuration.apiKey) {
@@ -15,14 +16,41 @@ export default async function (req, res) {
         return;
     }
 
-    const fs = require('fs');
     const image = req.body.image || "public/solarpunk.png";
+    if (image.trim().length === 0) {
+        res.status(400).json({
+        error: {
+            message: "Please enter a valid image location",
+        }
+        });
+        return;
+    }
+
+    const imageNumber = Number(req.body.imageNumber) || 1;
+    if (imageNumber == 0) {
+        res.status(400).json({
+        error: {
+            message: "Please select an image number",
+        }
+        });
+        return;
+    }
+
+    const imageSize = req.body.imageSize || "256x256";
+    if (imageSize == "") {
+        res.status(400).json({
+        error: {
+            message: "Please select an image size",
+        }
+        });
+        return;
+    }
 
     try {
         const response = await openai.createImageVariation(
             fs.createReadStream(image),
-            1,
-            "512x512"
+            imageNumber,
+            imageSize
         );
 
         function getUrl(image) {

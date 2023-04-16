@@ -15,7 +15,7 @@ export default async function (req, res) {
         return;
     }
 
-    const prompt = req.body.prompt || '';
+    const prompt = req.body.prompt || "unicorn";
     if (prompt.trim().length === 0) {
         res.status(400).json({
         error: {
@@ -25,11 +25,31 @@ export default async function (req, res) {
         return;
     }
 
+    const imageNumber = Number(req.body.imageNumber) || 1;
+    if (imageNumber == 0) {
+        res.status(400).json({
+        error: {
+            message: "Please select a number",
+        }
+        });
+        return;
+    }
+
+    const imageSize = req.body.imageSize || "256x256";
+    if (imageSize == "") {
+        res.status(400).json({
+        error: {
+            message: "Please select an image size",
+        }
+        });
+        return;
+    }
+
     try {
         const response = await openai.createImage({
             prompt: generatePrompt(prompt),
-            n: 1,
-            size: "512x512",
+            n: imageNumber,
+            size: imageSize,
         });
 
         function getUrl(image) {

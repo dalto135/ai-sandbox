@@ -4,17 +4,32 @@ import styles from "./index.module.css";
 
 export default function Home() {
   const [promptInput, setPromptInput] = useState("");
+  const [temperatureInput, setTemperatureInput] = useState("");
+
   const [dalleInput, setDalleInput] = useState("");
+  const [dalleImageNumber, setDalleImageNumber] = useState("");
+  const [dalleImageSize, setDalleImageSize] = useState("");
+
   const [dalleEditImage1, setDalleEditImage1] = useState("");
   const [dalleEditImage2, setDalleEditImage2] = useState("");
   const [dalleEditPrompt, setDalleEditPrompt] = useState("");
+  const [dalleEditImageNumber, setDalleEditImageNumber] = useState("");
+  const [dalleEditImageSize, setDalleEditImageSize] = useState("");
+
   const [dalleVariationInput, setDalleVariationInput] = useState("");
+  const [dalleVariationImageNumber, setDalleVariationImageNumber] = useState("");
+  const [dalleVariationImageSize, setDalleVariationImageSize] = useState("");
+
   // const [whisperInput, setWhisperInput] = useState("");
 
   const [promptResult, setPromptResult] = useState();
+
   const [dalleResult, setDalleResult] = useState();
+
   const [dalleEditResult, setDalleEditResult] = useState();
+
   const [dalleVariationResult, setDalleVariationResult] = useState();
+
   // const [whisperResult, setWhisperResult] = useState();
 
   async function onSubmit(event) {
@@ -25,7 +40,10 @@ export default function Home() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ prompt: promptInput }),
+        body: JSON.stringify({
+          prompt: promptInput,
+          temperature: temperatureInput
+        }),
       });
 
       const data = await response.json();
@@ -35,6 +53,7 @@ export default function Home() {
 
       setPromptResult(data.result);
       setPromptInput("");
+      setTemperatureInput("");
 
     } catch(error) {
       // Consider implementing your own error handling logic here
@@ -51,7 +70,11 @@ export default function Home() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ prompt: dalleInput }),
+        body: JSON.stringify({
+          prompt: dalleInput,
+          imageNumber: dalleImageNumber,
+          imageSize: dalleImageSize
+        }),
       });
 
       const data = await response.json();
@@ -61,6 +84,8 @@ export default function Home() {
 
       setDalleResult(data.result);
       setDalleInput("");
+      setDalleImageNumber("");
+      setDalleImageSize("");
     } catch(error) {
       // Consider implementing your own error handling logic here
       console.error(error);
@@ -79,7 +104,9 @@ export default function Home() {
         body: JSON.stringify({
           image1: dalleEditImage1,
           image2: dalleEditImage2,
-          prompt: dalleEditPrompt
+          prompt: dalleEditPrompt,
+          imageNumber: dalleEditImageNumber,
+          imageSize: dalleEditImageSize
         }),
       });
 
@@ -92,6 +119,9 @@ export default function Home() {
       setDalleEditImage1("");
       setDalleEditImage2("");
       setDalleEditPrompt("");
+      setDalleEditImageNumber("");
+      setDalleEditImageSize("");
+
     } catch(error) {
       // Consider implementing your own error handling logic here
       console.error(error);
@@ -107,7 +137,11 @@ export default function Home() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ image: dalleVariationInput }),
+        body: JSON.stringify({
+          image: dalleVariationInput,
+          imageNumber: dalleVariationImageNumber,
+          imageSize: dalleVariationImageSize
+        }),
       });
 
       const data = await response.json();
@@ -117,6 +151,9 @@ export default function Home() {
 
       setDalleVariationResult(data.result);
       setDalleVariationInput("");
+      setDalleVariationImageNumber("");
+      setDalleVariationImageNumber("");
+
     } catch(error) {
       // Consider implementing your own error handling logic here
       console.error(error);
@@ -166,10 +203,17 @@ export default function Home() {
             <form onSubmit={onSubmit}>
               <input
                 type="text"
-                name="animal"
-                placeholder="Enter an animal"
+                name="prompt"
+                placeholder="Enter an animal (default 'unicorn')"
                 value={promptInput}
                 onChange={(e) => setPromptInput(e.target.value)}
+              />
+              <input
+                type="text"
+                name="temperature"
+                placeholder="Temperature (0-1) (default 0.6)"
+                value={temperatureInput}
+                onChange={(e) => setTemperatureInput(e.target.value)}
               />
               <input type="submit" value="Generate names" />
             </form>
@@ -183,14 +227,35 @@ export default function Home() {
               <input
                 type="text"
                 name="image"
-                placeholder="Enter a prompt to generate an image"
+                placeholder="Enter a prompt (default 'unicorn')"
                 value={dalleInput}
                 onChange={(e) => setDalleInput(e.target.value)}
               />
+              Number of images:
+              <select name="imageNumber" onChange={(e) => setDalleImageNumber(e.target.value)}>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+                <option value="10">10</option>
+              </select>
+              Image size:
+              <select name="imageSize" onChange={(e) => setDalleImageSize(e.target.value)}>
+                <option value="256x256">256x256</option>
+                <option value="512x512">512x512</option>
+                <option value="1024x1024">1024x1024</option>
+              </select>
+              <br></br>
               <input type="submit" value="Generate image" />
             </form>
-            {dalleResult?.map((image) => 
-              <img className={styles.result} src={image}/>
+            
+            {dalleResult?.map((image, i) => 
+              <img key={i} className={styles.result} src={image}/>
             )}
           </div>
         </section>
@@ -217,14 +282,34 @@ export default function Home() {
               <input
                 type="text"
                 name="prompt"
-                placeholder="Enter prompt or leave blank"
+                placeholder="Enter a prompt (default 'cat')"
                 value={dalleEditPrompt}
                 onChange={(e) => setDalleEditPrompt(e.target.value)}
               />
+              Number of images:
+              <select name="imageNumber" onChange={(e) => setDalleEditImageNumber(e.target.value)}>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+                <option value="10">10</option>
+              </select>
+              Image size:
+              <select name="imageSize" onChange={(e) => setDalleEditImageSize(e.target.value)}>
+                <option value="256x256">256x256</option>
+                <option value="512x512">512x512</option>
+                <option value="1024x1024">1024x1024</option>
+              </select>
+              <br></br>
               <input type="submit" value="Edit image" />
             </form>
-            {dalleEditResult?.map((image) => 
-              <img className={styles.result} src={image}/>
+            {dalleEditResult?.map((image, i) => 
+              <img key={i} className={styles.result} src={image}/>
             )}
           </div>
 
@@ -239,10 +324,30 @@ export default function Home() {
                 value={dalleVariationInput}
                 onChange={(e) => setDalleVariationInput(e.target.value)}
               />
+              Number of images:
+              <select name="imageNumber" onChange={(e) => setDalleVariationImageNumber(e.target.value)}>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+                <option value="10">10</option>
+              </select>
+              Image size:
+              <select name="imageSize" onChange={(e) => setDalleVariationImageSize(e.target.value)}>
+                <option value="256x256">256x256</option>
+                <option value="512x512">512x512</option>
+                <option value="1024x1024">1024x1024</option>
+              </select>
+              <br></br>
               <input type="submit" value="Alter image" />
             </form>
-            {dalleVariationResult?.map((image) => 
-              <img className={styles.result} src={image}/>
+            {dalleVariationResult?.map((image, i) => 
+              <img key={i} className={styles.result} src={image}/>
             )}
           </div>
         </section>

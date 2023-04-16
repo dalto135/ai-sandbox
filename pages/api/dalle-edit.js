@@ -4,6 +4,7 @@ const configuration = new Configuration({
     apiKey: process.env.OPENAI_API_KEY,
 });
 const openai = new OpenAIApi(configuration);
+const fs = require('fs');
 
 export default async function (req, res) {
     if (!configuration.apiKey) {
@@ -17,18 +18,62 @@ export default async function (req, res) {
 
     // Relative paths of images, from root directory
     const image1 = req.body.image1 || "public/littlepunk.png";
-    const image2 = req.body.image2 || "public/dog.png";
-    const prompt = req.body.prompt || "cat";
+    if (image1.trim().length === 0) {
+        res.status(400).json({
+        error: {
+            message: "Please enter a valid image 1 location",
+        }
+        });
+        return;
+    }
 
-    const fs = require('fs');
+    const image2 = req.body.image2 || "public/dog.png";
+    if (image2.trim().length === 0) {
+        res.status(400).json({
+        error: {
+            message: "Please enter a valid image 2 location",
+        }
+        });
+        return;
+    }
+
+    const prompt = req.body.prompt || "cat";
+    if (prompt.trim().length === 0) {
+        res.status(400).json({
+        error: {
+            message: "Please enter a valid prompt",
+        }
+        });
+        return;
+    }
+
+    const imageNumber = Number(req.body.imageNumber) || 1;
+    if (imageNumber == 0) {
+        res.status(400).json({
+        error: {
+            message: "Please select a number",
+        }
+        });
+        return;
+    }
+
+    const imageSize = req.body.imageSize || "256x256";
+    if (imageSize == "") {
+        res.status(400).json({
+        error: {
+            message: "Please select an image size",
+        }
+        });
+        return;
+    }
 
     try {
         const response = await openai.createImageEdit(
             fs.createReadStream(image1),
             fs.createReadStream(image2),
             generatePrompt(prompt),
-            1,
-            "512x512"
+            imageNumber,
+            imageSize
         );
 
         function getUrl(image) {
