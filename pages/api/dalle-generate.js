@@ -15,7 +15,7 @@ export default async function (req, res) {
         return;
     }
 
-    const prompt = req.body.prompt || "unicorn";
+    const prompt = req.body.prompt || "Psychedelic nature scene";
     if (prompt.trim().length === 0) {
         res.status(400).json({
         error: {
@@ -50,6 +50,8 @@ export default async function (req, res) {
             prompt: generatePrompt(prompt),
             n: imageNumber,
             size: imageSize,
+            // response_format: "url",
+            // user: "user"
         });
 
         function getUrl(image) {

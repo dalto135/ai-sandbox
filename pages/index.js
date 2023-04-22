@@ -20,8 +20,6 @@ export default function Home() {
   const [dalleVariationImageNumber, setDalleVariationImageNumber] = useState("");
   const [dalleVariationImageSize, setDalleVariationImageSize] = useState("");
 
-  // const [whisperInput, setWhisperInput] = useState("");
-
   const [promptResult, setPromptResult] = useState();
 
   const [dalleResult, setDalleResult] = useState();
@@ -29,8 +27,6 @@ export default function Home() {
   const [dalleEditResult, setDalleEditResult] = useState();
 
   const [dalleVariationResult, setDalleVariationResult] = useState();
-
-  // const [whisperResult, setWhisperResult] = useState();
 
   async function onSubmit(event) {
     event.preventDefault();
@@ -161,31 +157,6 @@ export default function Home() {
     }
   }
 
-  // async function whisperOnSubmit(event) {
-  //   event.preventDefault();
-  //   try {
-  //     const response = await fetch("/api/whisper-generate", {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify({ animal: whisperInput }),
-  //     });
-
-  //     const data = await response.json();
-  //     if (response.status !== 200) {
-  //       throw data.error || new Error(`Request failed with status ${response.status}`);
-  //     }
-
-  //     setWhisperResult(data.result);
-  //     setWhisperInput("");
-  //   } catch(error) {
-  //     // Consider implementing your own error handling logic here
-  //     console.error(error);
-  //     alert(error.message);
-  //   }
-  // }
-
   return (
     <div>
       <Head>
@@ -198,26 +169,28 @@ export default function Home() {
 
         <section className="section">
           <div className={styles.main}>
-            <h3>Name my pet</h3>
+            <h3>ChatGPT</h3>
 
             <form onSubmit={onSubmit}>
               <input
                 type="text"
                 name="prompt"
-                placeholder="Enter an animal (default 'unicorn')"
+                placeholder="Enter an prompt or leave blank"
                 value={promptInput}
                 onChange={(e) => setPromptInput(e.target.value)}
               />
               <input
                 type="text"
                 name="temperature"
-                placeholder="Temperature (0-1) (default 0.6)"
+                placeholder="Temperature (0-2) (default 1)"
                 value={temperatureInput}
                 onChange={(e) => setTemperatureInput(e.target.value)}
               />
-              <input type="submit" value="Generate names" />
+              <input type="submit" value="Submit" />
             </form>
-            <div className={styles.result}>{promptResult}</div>
+            {promptResult?.map((result, i) => 
+              <div key={i} className={styles.result}>{result}</div>
+            )}
           </div>
 
           <div className={styles.main}>
@@ -351,24 +324,6 @@ export default function Home() {
             )}
           </div>
         </section>
-
-        {/* <section className="section">
-          <div className={styles.main}>
-            <h3>Whisper</h3>
-
-            <form onSubmit={whisperOnSubmit}>
-              <input
-                type="text"
-                name="image"
-                placeholder="Submit an audio clip for transcription/translation"
-                value={whisperInput}
-                onChange={(e) => setWhisperInput(e.target.value)}
-              />
-              <input type="submit" value="Transcribe" />
-            </form>
-            <div className={styles.result}>{whisperResult}</div>
-          </div>
-        </section> */}
       </main>
     </div>
   );

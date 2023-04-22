@@ -15,7 +15,7 @@ export default async function (req, res) {
     return;
   }
 
-  const prompt = req.body.prompt || "unicorn";
+  const prompt = req.body.prompt || "Name 10 outdoor activies to do in Columbus, Ohio.";
   if (prompt.trim().length === 0) {
     res.status(400).json({
       error: {
@@ -25,20 +25,20 @@ export default async function (req, res) {
     return;
   }
 
-  const temperature = req.body.temperature || 0.6;
+  const temperature = req.body.temperature || 1;
   if (!Number(temperature) && Number(temperature) != 0) {
     res.status(400).json({
       error: {
-        message: "Please enter a valid temperature.",
+        message: "Please enter a valid temperature (0-2).",
       }
     });
   
     return;
   }
-  if (temperature < 0 || temperature > 1) {
+  if (temperature < 0 || temperature > 2) {
     res.status(400).json({
       error: {
-        message: "Temperature must be between 0 and 1.",
+        message: "Temperature must be between 0 and 2.",
       }
     });
   
@@ -49,9 +49,28 @@ export default async function (req, res) {
     const completion = await openai.createCompletion({
       model: "text-davinci-003",
       prompt: generatePrompt(prompt),
-      temperature: Number(temperature)
+      // suffix: null,
+      max_tokens: 200,
+      temperature: Number(temperature),
+      // top_p: 1,
+      // n: 1,
+      // stream: false,
+      // logprobs: null,
+      // echo: false,
+      // stop: null,
+      // presence_penalty: 0,
+      // frequency_penalty: 0,
+      // best_of: 1,
+      // logit_bias: null, // Not working
+      // user: "user"
     });
-    res.status(200).json({ result: completion.data.choices[0].text });
+
+    function getText(response) {
+      return response.text;
+    }
+    let response = completion.data.choices.map(getText)
+    res.status(200).json({ result: response });
+    console.log(response);
   } catch(error) {
     // Consider adjusting the error handling logic for your use case
     if (error.response) {
@@ -71,14 +90,14 @@ export default async function (req, res) {
 function generatePrompt(prompt) {
   const capitalizedPrompt = prompt[0].toUpperCase() + prompt.slice(1).toLowerCase();
 
-  return `
-    Suggest three names for an animal that is a superhero.
-    Animal: Cat
-    Names: Captain Sharpclaw, Agent Fluffball, The Incredible Feline
-    Animal: Dog
-    Names: Ruff the Protector, Wonder Canine, Sir Barks-a-Lot
-    Animal: ${capitalizedPrompt}
-    Names:
-  `;
-  // return capitalizedPrompt;
+  // return `
+  //   Suggest three names for an animal that is a superhero.
+  //   Animal: Cat
+  //   Names: Captain Sharpclaw, Agent Fluffball, The Incredible Feline
+  //   Animal: Dog
+  //   Names: Ruff the Protector, Wonder Canine, Sir Barks-a-Lot
+  //   Animal: ${capitalizedPrompt}
+  //   Names:
+  // `;
+  return capitalizedPrompt;
 }

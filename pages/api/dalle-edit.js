@@ -73,7 +73,9 @@ export default async function (req, res) {
             fs.createReadStream(image2),
             generatePrompt(prompt),
             imageNumber,
-            imageSize
+            imageSize,
+            // response_format: "url",
+            // user: "user"
         );
 
         function getUrl(image) {

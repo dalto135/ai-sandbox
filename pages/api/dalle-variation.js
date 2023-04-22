@@ -50,7 +50,9 @@ export default async function (req, res) {
         const response = await openai.createImageVariation(
             fs.createReadStream(image),
             imageNumber,
-            imageSize
+            imageSize,
+            // response_format: "url",
+            // user: "user"
         );
 
         function getUrl(image) {
