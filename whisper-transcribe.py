@@ -3,7 +3,8 @@ import openai
 audio_file = open("public/hello.m4a", "rb")
 transcript = openai.Audio.transcribe(
     model="whisper-1",
-    file=audio_file
+    file=audio_file,
+    # prompt="Translate into english"
 )
 
 print(transcript.text)
